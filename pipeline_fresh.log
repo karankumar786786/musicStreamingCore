@@ -1,0 +1,488 @@
+2026-02-06 21:55:45,172 - INFO - 🤖 Initializing Whisper model...
+2026-02-06 21:55:46,006 - INFO - HTTP Request: GET https://huggingface.co/api/models/Systran/faster-whisper-medium/revision/main "HTTP/1.1 200 OK"
+2026-02-06 21:55:47,291 - INFO - ✅ Whisper model initialized successfully
+2026-02-06 21:55:47,298 - INFO - Found credentials in environment variables.
+2026-02-06 21:55:47,378 - INFO - ✅ AWS clients initialized successfully
+2026-02-06 21:55:47,378 - INFO - ============================================================
+2026-02-06 21:55:47,378 - INFO - Audio Processing Service Starting
+2026-02-06 21:55:47,378 - INFO - ============================================================
+2026-02-06 21:55:47,503 - INFO - ✅ FFmpeg is available
+2026-02-06 21:55:47,556 - INFO - ✅ FFprobe is available
+2026-02-06 21:55:47,557 - INFO - 🚀 SQS Poller started
+2026-02-06 21:55:47,557 - INFO -    Queue: https://sqs.ap-south-1.amazonaws.com/483600091367/musicprocessing
+2026-02-06 21:55:47,557 - INFO -    Source Bucket: musicstreamingtemprory
+2026-02-06 21:55:47,557 - INFO -    Destination Bucket: musicstreamingprod
+2026-02-06 21:55:48,256 - INFO - 📬 Received 1 message(s)
+2026-02-06 21:55:48,256 - INFO - 📥 New SQS job
+2026-02-06 21:55:48,256 - INFO -    Key: Ek+Mulakat+Zaruri+Hai+Sanam+%28%28+Sad%F0%9F%98%B0+%F0%9F%92%94+Song+%29%29HD+Sirf+Tum+1999+_+Jaspinder+Narula%2C+Sabri+Brothers.mp3
+2026-02-06 21:55:48,257 - INFO - 📦 Processing job: ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers_1770395148
+2026-02-06 21:55:48,257 - INFO -    Bucket: musicstreamingtemprory
+2026-02-06 21:55:48,257 - INFO -    Key: Ek Mulakat Zaruri Hai Sanam (( Sad😰 💔 Song ))HD Sirf Tum 1999 _ Jaspinder Narula, Sabri Brothers.mp3
+2026-02-06 21:55:48,258 - INFO - ⬇️ Downloading from S3...
+2026-02-06 21:56:21,646 - INFO - 📊 File size: 12.11 MB
+2026-02-06 21:56:21,739 - INFO - ⏱️ Duration: 833.12 seconds
+2026-02-06 21:56:21,744 - INFO - ✅ Original file saved
+2026-02-06 21:56:21,744 - INFO - 🎛️ Normalizing audio...
+2026-02-06 21:56:22,656 - INFO - ✅ Audio normalized
+2026-02-06 21:56:22,656 - INFO - 🎙️ Starting transcription (forced language: hi)...
+2026-02-06 21:56:22,748 - INFO - Processing audio with duration 13:53.086
+2026-02-06 21:56:23,389 - INFO - 🌐 Detected language: hi
+2026-02-06 22:09:57,494 - INFO - ✅ Transcription completed
+2026-02-06 22:09:57,495 - INFO - 📡 Generating multi-bitrate HLS streams...
+2026-02-06 22:10:08,160 - INFO - ✅ Master playlist created
+2026-02-06 22:10:08,160 - INFO - ☁️ Uploading to s3://musicstreamingprod/ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers
+2026-02-06 22:14:31,704 - INFO - ✅ Uploaded 423 files to S3
+2026-02-06 22:14:31,704 - INFO - 🎉 Job completed successfully: ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers_1770395148
+2026-02-06 22:14:31,704 - INFO -    Output: s3://musicstreamingprod/ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers
+2026-02-06 22:14:31,742 - INFO - 🧹 Cleanup completed
+2026-02-06 22:14:31,742 - INFO - ------------------------------------------------------------
+2026-02-06 22:14:32,424 - INFO - ✅ Message deleted from queue
+2026-02-06 22:14:32,604 - INFO - 📬 Received 1 message(s)
+2026-02-06 22:14:32,604 - INFO - 📥 New SQS job
+2026-02-06 22:14:32,604 - INFO -    Key: Ek+Mulakat+Zaruri+Hai+Sanam+%28%28+Sad%F0%9F%98%B0+%F0%9F%92%94+Song+%29%29HD+Sirf+Tum+1999+_+Jaspinder+Narula%2C+Sabri+Brothers.mp3
+2026-02-06 22:14:32,604 - INFO - 📦 Processing job: ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers_1770396272
+2026-02-06 22:14:32,604 - INFO -    Bucket: musicstreamingtemprory
+2026-02-06 22:14:32,604 - INFO -    Key: Ek Mulakat Zaruri Hai Sanam (( Sad😰 💔 Song ))HD Sirf Tum 1999 _ Jaspinder Narula, Sabri Brothers.mp3
+2026-02-06 22:14:32,605 - INFO - ⬇️ Downloading from S3...
+2026-02-06 22:15:14,964 - INFO - 📊 File size: 12.11 MB
+2026-02-06 22:15:15,131 - INFO - ⏱️ Duration: 833.12 seconds
+2026-02-06 22:15:15,137 - INFO - ✅ Original file saved
+2026-02-06 22:15:15,137 - INFO - 🎛️ Normalizing audio...
+2026-02-06 22:15:15,853 - INFO - ✅ Audio normalized
+2026-02-06 22:15:15,853 - INFO - 🎙️ Starting transcription (forced language: hi)...
+2026-02-06 22:15:15,951 - INFO - Processing audio with duration 13:53.086
+2026-02-06 22:15:16,321 - INFO - 🌐 Detected language: hi
+2026-02-06 22:33:46,639 - INFO - ✅ Transcription completed
+2026-02-06 22:33:46,644 - INFO - 📡 Generating multi-bitrate HLS streams...
+2026-02-06 22:34:00,193 - INFO - ✅ Master playlist created
+2026-02-06 22:34:00,193 - INFO - ☁️ Uploading to s3://musicstreamingprod/ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers
+2026-02-06 22:40:56,730 - ERROR - ❌ Processing failed for ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers_1770396272: Could not connect to the endpoint URL: "https://musicstreamingprod.s3.ap-south-1.amazonaws.com/ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers/128k/segment_110.ts"
+2026-02-06 22:40:56,785 - INFO - 🧹 Cleanup completed
+2026-02-06 22:40:56,785 - INFO - ------------------------------------------------------------
+2026-02-06 22:40:56,785 - ERROR - 🔁 Job failed - message will retry: Could not connect to the endpoint URL: "https://musicstreamingprod.s3.ap-south-1.amazonaws.com/ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers/128k/segment_110.ts"
+2026-02-06 22:41:13,125 - INFO - 📬 Received 1 message(s)
+2026-02-06 22:41:13,126 - INFO - 📥 New SQS job
+2026-02-06 22:41:13,126 - INFO -    Key: Ek+Mulakat+Zaruri+Hai+Sanam+%28%28+Sad%F0%9F%98%B0+%F0%9F%92%94+Song+%29%29HD+Sirf+Tum+1999+_+Jaspinder+Narula%2C+Sabri+Brothers.mp3
+2026-02-06 22:41:13,126 - INFO - 📦 Processing job: ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers_1770397873
+2026-02-06 22:41:13,126 - INFO -    Bucket: musicstreamingtemprory
+2026-02-06 22:41:13,126 - INFO -    Key: Ek Mulakat Zaruri Hai Sanam (( Sad😰 💔 Song ))HD Sirf Tum 1999 _ Jaspinder Narula, Sabri Brothers.mp3
+2026-02-06 22:41:13,127 - INFO - ⬇️ Downloading from S3...
+2026-02-06 22:43:42,120 - INFO - 📊 File size: 12.11 MB
+2026-02-06 22:43:42,270 - INFO - ⏱️ Duration: 833.12 seconds
+2026-02-06 22:43:42,297 - INFO - ✅ Original file saved
+2026-02-06 22:43:42,297 - INFO - 🎛️ Normalizing audio...
+2026-02-06 22:43:43,406 - INFO - ✅ Audio normalized
+2026-02-06 22:43:43,406 - INFO - 🎙️ Starting transcription (forced language: hi)...
+2026-02-06 22:43:43,559 - INFO - Processing audio with duration 13:53.086
+2026-02-06 22:43:44,059 - INFO - 🌐 Detected language: hi
+2026-02-06 23:01:04,162 - INFO - ✅ Transcription completed
+2026-02-06 23:01:04,164 - INFO - 📡 Generating multi-bitrate HLS streams...
+2026-02-06 23:01:04,301 - ERROR - ❌ FFmpeg failed for Multi-bitrate HLS generation: ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 17.0.0 (clang-1700.0.13.3)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0xb5ac3c000] Error opening input: No such file or directory
+Error opening input file /Users/rahulgupta/Desktop/musicStreaming/rustfs-downloads/ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers.mp3.
+Error opening input files: No such file or directory
+
+2026-02-06 23:01:04,301 - ERROR - ❌ Processing failed for ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers_1770397873: Multi-bitrate HLS generation failed
+2026-02-06 23:01:04,302 - INFO - 🧹 Cleanup completed
+2026-02-06 23:01:04,302 - INFO - ------------------------------------------------------------
+2026-02-06 23:01:04,302 - ERROR - 🔁 Job failed - message will retry: Multi-bitrate HLS generation failed
+2026-02-06 23:01:05,714 - INFO - 📬 Received 1 message(s)
+2026-02-06 23:01:05,714 - INFO - 📥 New SQS job
+2026-02-06 23:01:05,715 - INFO -    Key: Ek+Mulakat+Zaruri+Hai+Sanam+%28%28+Sad%F0%9F%98%B0+%F0%9F%92%94+Song+%29%29HD+Sirf+Tum+1999+_+Jaspinder+Narula%2C+Sabri+Brothers.mp3
+2026-02-06 23:01:05,715 - INFO - 📦 Processing job: ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers_1770399065
+2026-02-06 23:01:05,715 - INFO -    Bucket: musicstreamingtemprory
+2026-02-06 23:01:05,715 - INFO -    Key: Ek Mulakat Zaruri Hai Sanam (( Sad😰 💔 Song ))HD Sirf Tum 1999 _ Jaspinder Narula, Sabri Brothers.mp3
+2026-02-06 23:01:05,716 - INFO - ⬇️ Downloading from S3...
+2026-02-06 23:01:30,438 - INFO - 📊 File size: 12.11 MB
+2026-02-06 23:01:30,551 - INFO - ⏱️ Duration: 833.12 seconds
+2026-02-06 23:01:30,559 - INFO - ✅ Original file saved
+2026-02-06 23:01:30,559 - INFO - 🎛️ Normalizing audio...
+2026-02-06 23:01:31,383 - INFO - ✅ Audio normalized
+2026-02-06 23:01:31,383 - INFO - 🎙️ Starting transcription (forced language: hi)...
+2026-02-06 23:01:31,486 - INFO - Processing audio with duration 13:53.086
+2026-02-06 23:01:31,727 - INFO - 🌐 Detected language: hi
+2026-02-06 23:13:51,657 - INFO - ✅ Transcription completed
+2026-02-06 23:13:51,657 - INFO - 📡 Generating multi-bitrate HLS streams...
+2026-02-06 23:14:05,817 - INFO - ✅ Master playlist created
+2026-02-06 23:14:05,818 - INFO - ☁️ Uploading to s3://musicstreamingprod/ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers
+2026-02-06 23:16:52,974 - INFO - ✅ Uploaded 423 files to S3
+2026-02-06 23:16:52,974 - INFO - 🎉 Job completed successfully: ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers_1770399065
+2026-02-06 23:16:52,974 - INFO -    Output: s3://musicstreamingprod/ek-mulakat-zaruri-hai-sanam-sad-song-hd-sirf-tum-1999-_-jaspinder-narula-sabri-brothers
+2026-02-06 23:16:53,080 - INFO - 🧹 Cleanup completed
+2026-02-06 23:16:53,080 - INFO - ------------------------------------------------------------
+2026-02-06 23:16:53,778 - INFO - ✅ Message deleted from queue
+2026-02-07 00:15:06,039 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:15:16,758 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:15:25,376 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:15:33,264 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:15:40,540 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:15:48,168 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:15:58,156 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:16:07,904 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:16:16,793 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:16:56,006 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:17:04,483 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:17:15,131 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:17:25,330 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:17:32,886 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:17:41,034 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:17:51,019 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:18:01,096 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:18:42,331 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:18:49,639 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:18:58,695 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:19:05,103 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:19:13,236 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:19:22,892 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:19:30,954 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:19:38,423 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:19:46,298 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:19:55,729 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:20:35,208 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:20:45,195 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:20:54,268 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:21:02,979 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:21:13,482 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:21:22,272 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:21:27,278 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:21:32,290 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:21:37,297 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:21:42,306 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:21:47,317 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:22:22,325 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:22:27,338 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:22:32,350 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:22:37,360 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:22:42,371 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:22:47,376 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:22:52,392 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:22:57,404 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:23:02,415 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:23:07,422 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:23:12,437 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:23:17,443 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:23:22,460 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:23:27,471 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:23:32,477 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:23:37,486 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:24:12,494 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:24:17,506 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:24:22,516 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:24:27,528 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:24:32,536 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:24:37,549 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:24:42,564 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:24:47,577 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:24:52,583 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:24:57,591 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:25:02,598 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:25:07,610 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:25:12,621 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:25:17,630 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:25:22,644 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:25:27,653 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:02,667 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:07,679 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:12,686 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:17,698 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:22,715 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:27,731 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:32,737 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:37,747 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:42,754 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:47,758 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:52,767 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:26:57,778 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:27:02,792 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:27:07,799 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:27:12,813 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:27:17,825 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:27:52,837 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:27:57,846 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:02,853 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:07,861 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:12,871 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:17,886 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:22,894 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:27,901 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:32,914 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:37,921 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:42,934 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:47,941 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:52,950 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:28:57,958 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:29:02,970 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:29:07,982 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:29:42,989 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:29:48,004 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:29:53,011 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:29:58,024 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:03,037 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:08,046 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:13,055 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:18,069 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:23,077 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:28,085 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:33,096 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:38,112 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:43,120 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:48,127 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:53,143 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:30:58,152 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:31:33,164 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:31:38,171 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:31:43,187 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:31:48,196 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:31:53,206 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:31:58,220 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:32:03,232 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:32:08,242 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:32:13,249 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:32:18,257 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:32:23,271 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:32:28,284 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:32:33,292 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:32:38,301 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:32:43,315 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:32:48,325 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:33:23,335 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:33:28,345 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:33:33,355 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:33:38,368 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:33:43,375 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:33:48,382 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:33:53,391 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:33:58,400 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:34:03,408 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:34:08,423 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:34:13,430 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:34:18,442 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:34:23,449 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:34:28,457 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:34:33,468 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:34:38,475 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:34:43,485 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:35:18,498 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:35:23,506 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:35:28,515 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:35:33,523 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:35:38,537 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:35:43,551 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:35:48,559 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:35:53,566 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:35:58,576 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:36:03,593 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:36:08,605 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:36:13,616 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:36:18,622 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:36:23,631 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:36:28,641 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:37:03,653 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:37:10,049 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:37:15,064 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:37:20,070 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:37:25,079 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:37:30,095 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:37:35,111 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:37:40,133 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:37:45,149 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:37:50,157 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:37:55,172 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:38:00,187 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:38:05,204 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:38:10,214 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:38:15,230 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:38:20,242 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:38:51,499 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:38:59,875 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:39:04,889 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:39:09,900 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:39:14,904 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:39:19,919 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:39:24,928 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:39:29,939 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:39:34,953 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:39:39,964 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:39:44,972 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:39:49,983 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:39:54,992 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:40:00,000 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:40:05,007 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:40:36,119 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:41:11,133 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:41:16,139 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:41:21,154 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:41:26,165 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:41:31,177 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:41:36,186 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:41:41,196 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:41:46,206 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:41:51,221 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:42:23,381 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:42:28,388 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:43:03,404 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:43:08,413 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:43:13,427 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:43:18,441 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:43:23,452 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:43:28,462 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:43:33,476 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:43:38,485 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:44:11,633 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:44:16,645 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:44:21,655 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:44:56,663 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:45:01,681 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:45:06,688 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:45:11,695 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:45:16,704 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:45:21,719 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:45:26,730 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:46:01,737 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:46:06,752 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:46:11,767 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:46:46,778 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:46:51,786 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:46:56,804 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:47:01,819 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:47:06,826 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:47:11,835 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:47:16,850 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:47:51,862 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:47:56,875 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:48:01,884 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:48:36,895 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:48:41,908 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:48:46,923 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:48:51,930 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:48:56,945 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:49:01,957 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:49:06,967 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:49:41,981 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:49:48,188 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:49:53,200 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:50:28,212 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:50:33,218 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:50:38,230 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:50:43,239 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:50:48,253 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:50:53,261 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:50:58,268 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:51:03,278 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:51:36,196 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:51:41,204 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:51:46,214 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:52:21,230 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:52:26,240 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:52:31,254 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:52:36,263 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:52:41,270 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:52:46,274 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:52:51,285 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:53:24,358 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:53:29,372 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:53:34,384 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:53:39,399 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:54:14,409 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:54:19,422 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:54:24,431 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:54:29,443 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:54:34,455 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:54:39,464 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:55:12,641 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:55:17,653 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:55:22,659 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:55:27,672 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:55:32,678 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:56:07,693 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:56:12,700 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:56:17,717 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:56:22,733 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:56:27,746 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:57:00,928 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:57:05,942 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:57:10,956 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:57:15,967 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:57:20,975 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:57:25,990 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:58:00,999 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:58:06,012 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:58:11,021 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:58:16,030 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:58:49,179 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:58:54,190 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:58:59,207 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:59:04,218 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:59:09,227 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:59:14,240 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:59:19,248 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:59:54,257 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 00:59:59,269 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:00:04,281 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:00:37,582 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:00:42,596 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:00:47,610 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:00:52,624 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:00:57,639 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:01:02,650 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:01:07,659 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:01:12,671 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:01:47,688 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:01:52,696 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:02:15,324 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:02:20,339 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:02:25,350 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:02:30,360 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:02:35,368 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:02:40,376 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:02:45,388 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:02:50,400 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:02:55,408 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:03:00,417 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:03:05,425 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:03:40,434 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:03:56,014 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:04:01,023 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:04:06,034 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:04:11,041 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:04:16,051 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:04:21,062 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:04:26,075 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:04:31,085 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:04:36,094 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 01:04:41,104 - ERROR - ❌ Unexpected error in polling loop: Could not connect to the endpoint URL: "https://sqs.ap-south-1.amazonaws.com/"
+2026-02-07 03:29:57,259 - INFO - 📬 Received 1 message(s)
+2026-02-07 03:29:57,261 - INFO - 📥 New SQS job
+2026-02-07 03:29:57,261 - INFO -    Key: The+Weeknd+-+Sa%CC%83o+Paulo+feat.+Anitta+%28Official+Audio%29.mp3
+2026-02-07 03:29:57,261 - INFO - 📦 Processing job: the-weeknd-sao-paulo-feat-anitta-official-audio_1770415197
+2026-02-07 03:29:57,262 - INFO -    Bucket: musicstreamingtemprory
+2026-02-07 03:29:57,262 - INFO -    Key: The Weeknd - São Paulo feat. Anitta (Official Audio).mp3
+2026-02-07 03:29:57,262 - INFO - ⬇️ Downloading from S3...
+2026-02-07 03:29:59,840 - INFO - 📊 File size: 11.51 MB
+2026-02-07 03:29:59,979 - INFO - ⏱️ Duration: 301.79 seconds
+2026-02-07 03:29:59,992 - INFO - ✅ Original file saved
+2026-02-07 03:29:59,992 - INFO - 🎛️ Normalizing audio...
+2026-02-07 03:30:00,699 - INFO - ✅ Audio normalized
+2026-02-07 03:30:00,699 - INFO - 🎙️ Starting transcription (forced language: hi)...
+2026-02-07 03:30:00,808 - INFO - Processing audio with duration 05:01.767
+2026-02-07 03:30:01,001 - INFO - 🌐 Detected language: hi
+2026-02-07 04:00:02,261 - INFO - ✅ Transcription completed
+2026-02-07 04:00:02,272 - INFO - 📡 Generating multi-bitrate HLS streams...
+2026-02-07 04:00:23,708 - INFO - ✅ Master playlist created
+2026-02-07 04:00:23,709 - INFO - ☁️ Uploading to s3://musicstreamingprod/the-weeknd-sao-paulo-feat-anitta-official-audio
+2026-02-07 04:01:32,223 - INFO - ✅ Uploaded 157 files to S3
+2026-02-07 04:01:32,223 - INFO - 🎉 Job completed successfully: the-weeknd-sao-paulo-feat-anitta-official-audio_1770415197
+2026-02-07 04:01:32,223 - INFO -    Output: s3://musicstreamingprod/the-weeknd-sao-paulo-feat-anitta-official-audio
+2026-02-07 04:01:32,250 - INFO - 🧹 Cleanup completed
+2026-02-07 04:01:32,250 - INFO - ------------------------------------------------------------
+2026-02-07 04:01:32,747 - INFO - ✅ Message deleted from queue

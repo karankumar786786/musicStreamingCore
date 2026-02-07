@@ -1,0 +1,247 @@
+:root {
+  --bg-color: #050505;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --accent-color: #1db954;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --glass-blur: 20px;
+  --transition-speed: 0.3s;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(100px);
+  opacity: 0.15;
+  z-index: -1;
+}
+
+.player-container {
+  width: 90%;
+  max-width: 1000px;
+  height: 80vh;
+  display: grid;
+  grid-template-columns: 40% 60%;
+  gap: 40px;
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.album-art {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin-bottom: 24px;
+  background: #121212;
+}
+
+.album-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.artist {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.controls-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.progress-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.time-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.seek-bar-container {
+  width: 100%;
+  position: relative;
+}
+
+#seekBar {
+  width: 100%;
+  height: 4px;
+  appearance: none;
+  background: #333;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+#seekBar::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#seekBar::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+.playback-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
+
+.btn {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  transition: opacity var(--transition-speed), transform 0.2s;
+}
+
+.btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.btn-play {
+  width: 60px;
+  height: 60px;
+  background: var(--text-primary);
+  color: var(--bg-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.lyrics-container {
+  height: 100%;
+  overflow-y: scroll;
+  padding-right: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+.lyrics-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.lyrics-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.lyrics-line {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 10px 0;
+  color: #444;
+  transition: color var(--transition-speed), transform var(--transition-speed);
+  cursor: pointer;
+  transform-origin: left center;
+}
+
+.lyrics-line.active {
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+.lyrics-line.played {
+  color: var(--text-secondary);
+}
+
+.word {
+  display: inline;
+  color: inherit;
+  transition: color 0.15s ease;
+}
+
+.word.active {
+  color: var(--accent-color);
+}
+
+@media (max-width: 800px) {
+  .player-container {
+    grid-template-columns: 1fr;
+    height: auto;
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+
+  .lyrics-container {
+    height: 300px;
+  }
+  
+  .lyrics-line {
+    font-size: 1.5rem;
+  }
+}
