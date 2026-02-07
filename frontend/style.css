@@ -182,6 +182,47 @@ body::before {
   font-size: 1.5rem;
 }
 
+.quality-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.quality-control label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.quality-select {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.quality-select:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent-color);
+}
+
+.quality-select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.2);
+}
+
+.quality-select option {
+  background: #1a1a1a;
+  color: var(--text-primary);
+}
+
 .lyrics-container {
   height: 100%;
   overflow-y: scroll;
@@ -208,6 +249,13 @@ body::before {
   transition: color var(--transition-speed), transform var(--transition-speed);
   cursor: pointer;
   transform-origin: left center;
+}
+
+.lyrics-placeholder {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  opacity: 0.6;
 }
 
 .lyrics-line.active {

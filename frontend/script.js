@@ -4,23 +4,32 @@ const seekBar = document.getElementById("seekBar");
 const currentTimeDisplay = document.getElementById("currentTime");
 const durationDisplay = document.getElementById("duration");
 const lyricsDisplay = document.getElementById("lyricsDisplay");
+const qualitySelector = document.getElementById("qualitySelector");
 
-const audioSrc = "https://musicstreamingprod.s3.ap-south-1.amazonaws.com/the-weeknd-sao-paulo-feat-anitta-official-audio/master.m3u8";
+const audioSrc = "https://musicstreamingprod.s3.ap-south-1.amazonaws.com/eminem-without-me-official-music-video/master.m3u8";
 
-let lyrics = [];
+let allCues = [];
+let displayedCues = new Set();
 let currentLyricIndex = -1;
-let lyricsLoaded = false;
+let previousLyricIndex = -1;
+let hls = null;
 
-// Initialize HLS
+// Initialize HLS with ABR support
 if (Hls.isSupported()) {
-  const hls = new Hls({
+  hls = new Hls({
     autoStartLoad: true,
-    startLevel: -1,
+    startLevel: -1, // -1 = Auto quality (ABR)
     maxBufferLength: 30,
     maxMaxBufferLength: 60,
     enableWebVTT: true,
     enableCEA708Captions: false,
-    debug: false, // Set to true for debugging
+    debug: false,
+    
+    // ABR Configuration
+    abrEwmaDefaultEstimate: 500000,
+    abrBandWidthFactor: 0.95,
+    abrBandWidthUpFactor: 0.7,
+    abrMaxWithRealBitrate: false,
   });
 
   hls.loadSource(audioSrc);
@@ -28,35 +37,43 @@ if (Hls.isSupported()) {
 
   hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
     console.log("✅ Manifest parsed");
-    console.log("📋 Subtitle tracks:", hls.subtitleTracks);
+    console.log(`📊 Available quality levels: ${data.levels.length}`);
+    
+    // Populate quality selector
+    populateQualitySelector(data.levels);
     
     if (hls.subtitleTracks.length > 0) {
       hls.subtitleTrack = 0;
-      console.log("✅ Enabled subtitle track:", hls.subtitleTracks[0]);
-    } else {
-      console.warn("⚠️ No subtitle tracks in manifest");
+      console.log("✅ Subtitle track enabled");
     }
   });
 
-  hls.on(Hls.Events.SUBTITLE_TRACK_LOADED, (event, data) => {
-    console.log("✅ Subtitle track loaded");
+  // Monitor quality level changes
+  hls.on(Hls.Events.LEVEL_SWITCHING, (event, data) => {
+    console.log(`🔄 Switching to level ${data.level}`);
+  });
+
+  hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+    const level = hls.levels[data.level];
+    const bitrate = Math.round(level.bitrate / 1000);
+    console.log(`✅ Now playing: ${bitrate}kbps`);
+    updateQualityDisplay(data.level);
   });
 
   hls.on(Hls.Events.ERROR, (event, data) => {
     if (data.fatal) {
-      console.error("❌ Fatal:", data.type, data.details);
       switch (data.type) {
         case Hls.ErrorTypes.NETWORK_ERROR:
+          console.error("❌ Network error, retrying...");
           setTimeout(() => hls.startLoad(), 1000);
           break;
         case Hls.ErrorTypes.MEDIA_ERROR:
+          console.error("❌ Media error, recovering...");
           hls.recoverMediaError();
           break;
-      }
-    } else {
-      // Filter out non-critical warnings
-      if (!data.details.includes("SUBTITLE") && !data.details.includes("subtitle")) {
-        console.warn("⚠️", data.details);
+        default:
+          console.error("❌ Fatal error:", data.details);
+          break;
       }
     }
   });
@@ -64,19 +81,75 @@ if (Hls.isSupported()) {
 } else if (audio.canPlayType('application/vnd.apple.mpegurl')) {
   audio.src = audioSrc;
   console.log("✅ Safari native HLS");
+  // Safari handles ABR automatically, no quality selector needed
+  if (qualitySelector) {
+    qualitySelector.style.display = 'none';
+  }
 }
 
-// Setup text tracks when metadata loads
-audio.addEventListener('loadedmetadata', () => {
-  console.log("✅ Media metadata loaded");
-  setTimeout(setupTextTracks, 500); // Small delay to ensure tracks are ready
-});
+// Populate quality selector dropdown
+function populateQualitySelector(levels) {
+  if (!qualitySelector) return;
+  
+  // Clear existing options
+  qualitySelector.innerHTML = '';
+  
+  // Add Auto option
+  const autoOption = document.createElement('option');
+  autoOption.value = '-1';
+  autoOption.textContent = 'Auto';
+  autoOption.selected = true;
+  qualitySelector.appendChild(autoOption);
+  
+  // Add quality levels
+  levels.forEach((level, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    const bitrate = Math.round(level.bitrate / 1000);
+    option.textContent = `${bitrate}kbps`;
+    qualitySelector.appendChild(option);
+  });
+  
+  console.log(`📋 Quality selector populated with ${levels.length} levels`);
+}
 
-// Also try when data is loaded
-audio.addEventListener('loadeddata', () => {
-  if (!lyricsLoaded) {
-    setTimeout(setupTextTracks, 500);
+// Update quality selector to reflect current level
+function updateQualityDisplay(levelIndex) {
+  if (!qualitySelector) return;
+  
+  // If auto mode, don't change selector value
+  if (hls.currentLevel === -1) {
+    qualitySelector.value = '-1';
+  } else {
+    qualitySelector.value = levelIndex.toString();
   }
+}
+
+// Handle quality selector change
+if (qualitySelector) {
+  qualitySelector.addEventListener('change', (e) => {
+    if (!hls) return;
+    
+    const selectedLevel = parseInt(e.target.value);
+    
+    if (selectedLevel === -1) {
+      // Auto mode
+      hls.currentLevel = -1;
+      console.log("🔄 Switched to Auto quality");
+    } else {
+      // Manual quality selection
+      hls.currentLevel = selectedLevel;
+      const level = hls.levels[selectedLevel];
+      const bitrate = Math.round(level.bitrate / 1000);
+      console.log(`🔄 Manually selected: ${bitrate}kbps`);
+    }
+  });
+}
+
+// Text track setup
+audio.addEventListener('loadedmetadata', () => {
+  console.log("✅ Media loaded");
+  setTimeout(setupTextTracks, 500);
 });
 
 function setupTextTracks() {
@@ -84,79 +157,60 @@ function setupTextTracks() {
   console.log(`📝 Found ${textTracks.length} text track(s)`);
 
   if (textTracks.length === 0) {
-    console.warn("⚠️ No text tracks available");
     lyricsDisplay.innerHTML = '<div class="lyrics-line">No lyrics available</div>';
     return;
   }
 
   for (let i = 0; i < textTracks.length; i++) {
     const track = textTracks[i];
-    console.log(`Track ${i}: kind=${track.kind}, label=${track.label}, language=${track.language}`);
-    
-    // Enable the track in hidden mode (we handle display ourselves)
     track.mode = 'hidden';
     
-    // Try to load cues immediately if available
     if (track.cues && track.cues.length > 0) {
-      console.log(`✅ Track ${i} has ${track.cues.length} cues ready`);
-      loadCuesFromTrack(track);
-      lyricsLoaded = true;
+      loadAllCues(track);
     } else {
-      // Listen for cues to be added
-      console.log(`⏳ Waiting for cues on track ${i}...`);
-      
       track.addEventListener('load', () => {
-        console.log(`✅ Track ${i} load event - ${track.cues?.length || 0} cues`);
         if (track.cues && track.cues.length > 0) {
-          loadCuesFromTrack(track);
-          lyricsLoaded = true;
+          loadAllCues(track);
         }
       });
 
-      // Also watch for cue changes
       const checkCues = setInterval(() => {
-        if (track.cues && track.cues.length > 0 && !lyricsLoaded) {
-          console.log(`✅ Cues detected - ${track.cues.length} total`);
+        if (track.cues && track.cues.length > 0) {
           clearInterval(checkCues);
-          loadCuesFromTrack(track);
-          lyricsLoaded = true;
+          loadAllCues(track);
         }
       }, 500);
 
-      // Stop checking after 10 seconds
       setTimeout(() => clearInterval(checkCues), 10000);
     }
   }
 }
 
-function loadCuesFromTrack(track) {
-  if (!track.cues || track.cues.length === 0) {
-    console.warn("Track has no cues to load");
-    return;
-  }
-
-  console.log(`📥 Loading ${track.cues.length} cues...`);
-  lyrics = []; // Clear existing lyrics
+function loadAllCues(track) {
+  console.log(`📥 Loading ${track.cues.length} cues into memory`);
+  allCues = [];
   
   for (let i = 0; i < track.cues.length; i++) {
     const cue = track.cues[i];
-    processCue(cue);
+    const parsedCue = parseCue(cue, i);
+    if (parsedCue.words.length > 0) {
+      allCues.push(parsedCue);
+    }
   }
   
-  console.log(`✅ Processed ${lyrics.length} lyric lines`);
-  renderLyrics();
+  console.log(`✅ Loaded ${allCues.length} lyric cues`);
+  lyricsDisplay.innerHTML = '<div class="lyrics-line lyrics-placeholder">♪ Play to see lyrics ♪</div>';
 }
 
-function processCue(cue) {
-  const currentCue = {
+function parseCue(cue, cueIndex) {
+  const parsed = {
+    index: cueIndex,
     start: cue.startTime,
     end: cue.endTime,
     words: []
   };
 
   const text = cue.text || '';
-  
-  // Parse word-level timestamps: <00:00:10.100>word
   const wordRegex = /<(\d{2}:\d{2}:\d{2}\.\d{3})>([^<]+)/g;
   let match;
   let foundWords = false;
@@ -165,7 +219,7 @@ function processCue(cue) {
     foundWords = true;
     const wordText = match[2].trim();
     if (wordText) {
-      currentCue.words.push({
+      parsed.words.push({
         time: timeToSeconds(match[1]),
         text: wordText
       });
@@ -173,18 +227,15 @@ function processCue(cue) {
   }
 
   if (!foundWords && text.trim()) {
-    // No word-level timing, split by spaces
     text.split(/\s+/).filter(w => w.trim()).forEach(word => {
-      currentCue.words.push({ 
-        time: currentCue.start, 
+      parsed.words.push({ 
+        time: parsed.start, 
         text: word.trim() 
       });
     });
   }
 
-  if (currentCue.words.length > 0) {
-    lyrics.push(currentCue);
-  }
+  return parsed;
 }
 
 function timeToSeconds(timeStr) {
@@ -201,79 +252,117 @@ function timeToSeconds(timeStr) {
   return seconds;
 }
 
-function renderLyrics() {
-  lyricsDisplay.innerHTML = '';
+function appendLyricsIfNeeded(curTime) {
+  if (allCues.length === 0) return;
 
-  if (lyrics.length === 0) {
-    lyricsDisplay.innerHTML = '<div class="lyrics-line">No lyrics found</div>';
-    return;
+  allCues.forEach((cue, index) => {
+    const shouldDisplay = curTime >= (cue.start - 2);
+    const alreadyDisplayed = displayedCues.has(index);
+    
+    if (shouldDisplay && !alreadyDisplayed) {
+      appendLyricLine(cue, index);
+      displayedCues.add(index);
+    }
+  });
+}
+
+function appendLyricLine(cue, index) {
+  const placeholder = lyricsDisplay.querySelector('.lyrics-placeholder');
+  if (placeholder) {
+    placeholder.remove();
   }
 
-  console.log(`🎨 Rendering ${lyrics.length} lyric lines`);
+  const lineDiv = document.createElement('div');
+  lineDiv.className = 'lyrics-line';
+  lineDiv.id = `cue-${index}`;
+  lineDiv.style.opacity = '0';
+  lineDiv.style.transform = 'translateY(20px)';
 
-  lyrics.forEach((cue, index) => {
-    const lineDiv = document.createElement('div');
-    lineDiv.className = 'lyrics-line';
-    lineDiv.id = `cue-${index}`;
+  cue.words.forEach((word, wIndex) => {
+    const wordSpan = document.createElement('span');
+    wordSpan.className = 'word';
+    wordSpan.textContent = word.text;
+    lineDiv.appendChild(wordSpan);
 
-    cue.words.forEach((word, wIndex) => {
-      const wordSpan = document.createElement('span');
-      wordSpan.className = 'word';
-      wordSpan.textContent = word.text;
-      lineDiv.appendChild(wordSpan);
-
-      if (wIndex < cue.words.length - 1) {
-        lineDiv.appendChild(document.createTextNode(' '));
-      }
-    });
-
-    lineDiv.onclick = () => {
-      audio.currentTime = cue.start;
-      if (audio.paused) audio.play();
-    };
-
-    lyricsDisplay.appendChild(lineDiv);
+    if (wIndex < cue.words.length - 1) {
+      lineDiv.appendChild(document.createTextNode(' '));
+    }
   });
 
-  console.log("✅ Lyrics rendered");
+  lineDiv.onclick = () => {
+    audio.currentTime = cue.start;
+    if (audio.paused) audio.play();
+  };
+
+  lyricsDisplay.appendChild(lineDiv);
+
+  requestAnimationFrame(() => {
+    lineDiv.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    lineDiv.style.opacity = '1';
+    lineDiv.style.transform = 'translateY(0)';
+  });
 }
 
 function syncLyrics(curTime) {
-  if (lyrics.length === 0) return;
+  if (allCues.length === 0) return;
 
-  const activeIndex = lyrics.findIndex(c => curTime >= c.start && curTime < c.end);
+  appendLyricsIfNeeded(curTime);
 
-  if (activeIndex !== -1 && activeIndex !== currentLyricIndex) {
-    // Remove previous active state
-    if (currentLyricIndex !== -1) {
-      const prev = document.getElementById(`cue-${currentLyricIndex}`);
-      if (prev) {
-        prev.classList.remove('active');
-        prev.classList.add('played');
-        prev.querySelectorAll('.word').forEach(w => w.classList.remove('active'));
+  let activeIndex = -1;
+  for (let i = 0; i < allCues.length; i++) {
+    if (displayedCues.has(i)) {
+      const cue = allCues[i];
+      if (curTime >= cue.start && curTime <= cue.end + 0.1) {
+        activeIndex = i;
+        break;
       }
-    }
-
-    // Set new active state
-    const active = document.getElementById(`cue-${activeIndex}`);
-    if (active) {
-      active.classList.add('active');
-      active.classList.remove('played');
-      currentLyricIndex = activeIndex;
-      active.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
 
-  // Word-by-word highlighting
-  if (activeIndex !== -1) {
-    const cue = lyrics[activeIndex];
-    const active = document.getElementById(`cue-${activeIndex}`);
+  if (activeIndex !== currentLyricIndex) {
+    
+    if (previousLyricIndex !== -1 && previousLyricIndex !== activeIndex) {
+      const prevElement = document.getElementById(`cue-${previousLyricIndex}`);
+      if (prevElement) {
+        const prevWords = prevElement.querySelectorAll('.word');
+        prevWords.forEach(word => {
+          word.classList.add('active');
+        });
+        
+        setTimeout(() => {
+          prevElement.classList.remove('active');
+          prevElement.classList.add('played');
+          prevWords.forEach(w => w.classList.remove('active'));
+        }, 100);
+      }
+    }
 
-    if (active) {
-      const words = active.querySelectorAll('.word');
-      cue.words.forEach((wc, i) => {
+    if (activeIndex !== -1) {
+      const activeElement = document.getElementById(`cue-${activeIndex}`);
+      if (activeElement) {
+        activeElement.classList.add('active');
+        activeElement.classList.remove('played');
+        activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    previousLyricIndex = currentLyricIndex;
+    currentLyricIndex = activeIndex;
+  }
+
+  if (activeIndex !== -1) {
+    const cue = allCues[activeIndex];
+    const activeElement = document.getElementById(`cue-${activeIndex}`);
+
+    if (activeElement) {
+      const words = activeElement.querySelectorAll('.word');
+      
+      cue.words.forEach((wordCue, i) => {
         if (i < words.length) {
-          words[i].classList.toggle('active', curTime >= wc.time);
+          const shouldHighlight = curTime >= wordCue.time || 
+                                 (i === cue.words.length - 1 && curTime >= wordCue.time - 0.1);
+          
+          words[i].classList.toggle('active', shouldHighlight);
         }
       });
     }
@@ -316,7 +405,17 @@ audio.addEventListener('timeupdate', () => {
 });
 
 seekBar.addEventListener('input', () => {
-  audio.currentTime = (seekBar.value / 100) * audio.duration;
+  const newTime = (seekBar.value / 100) * audio.duration;
+  audio.currentTime = newTime;
+  
+  if (allCues.length > 0) {
+    allCues.forEach((cue, index) => {
+      if (newTime >= (cue.start - 2) && !displayedCues.has(index)) {
+        appendLyricLine(cue, index);
+        displayedCues.add(index);
+      }
+    });
+  }
 });
 
 function formatTime(seconds) {
@@ -326,4 +425,4 @@ function formatTime(seconds) {
   return `${min}:${sec.toString().padStart(2, '0')}`;
 }
 
-console.log("🎵 Music player initialized");
+console.log("🎵 Music player with ABR support initialized");

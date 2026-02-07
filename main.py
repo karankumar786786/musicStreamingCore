@@ -353,15 +353,18 @@ def cleanup_job(job_dir: Path, download_path: Path) -> None:
     """Clean up temporary files after processing."""
     try:
         if job_dir.exists():
-            shutil.rmtree(job_dir)
+            shutil.rmtree(job_dir, ignore_errors=True)
+            logger.info(f"🧹 Cleaned up work directory: {job_dir.name}")
+            
         if download_path.exists():
             download_path.unlink()
-        logger.info("🧹 Cleanup completed")
+            logger.info(f"🧹 Cleaned up download: {download_path.name}")
+            
     except Exception as e:
         logger.warning(f"⚠️ Cleanup error: {e}")
 
 
-def download_object(bucket: str, key: str) -> None:
+def download_object(bucket: str, key: str, receipt_handle: str = None) -> None:
     """Main processing function for audio files."""
     decoded_key = urllib.parse.unquote_plus(key)
     original_path = Path(decoded_key)
@@ -388,6 +391,14 @@ def download_object(bucket: str, key: str) -> None:
         # Download from S3
         logger.info(f"⬇️ Downloading from S3...")
         s3.download_file(bucket, decoded_key, str(download_path))
+        
+        # Immediate deletion after successful download
+        if receipt_handle:
+            try:
+                sqs.delete_message(QueueUrl=SQS_URL, ReceiptHandle=receipt_handle)
+                logger.info("✅ Message deleted immediately after download")
+            except Exception as e:
+                logger.warning(f"⚠️ Failed to delete message early: {e}")
         
         # Check file size
         file_size_mb = download_path.stat().st_size / (1024 * 1024)
@@ -522,17 +533,33 @@ def poll_sqs() -> None:
                         logger.info(f"   Key: {object_key}")
                         
                         # Always download from TEMP_BUCKET_NAME
-                        download_object(TEMP_BUCKET_NAME, object_key)
+                        download_object(TEMP_BUCKET_NAME, object_key, receipt_handle)
 
-                    # Delete message after successful processing
-                    sqs.delete_message(QueueUrl=SQS_URL, ReceiptHandle=receipt_handle)
-                    logger.info("✅ Message deleted from queue")
+                    # Message deletion is now handled inside download_object
 
                 except KeyError as e:
                     logger.error(f"❌ Missing expected field in message: {e}")
                     
                 except Exception as e:
-                    logger.error(f"🔁 Job failed - message will retry: {e}")
+                    logger.error(f"❌ Job processing failed: {e}")
+                    
+                    # Re-queue the message to retry later (with delay to prevent tight loop)
+                    try:
+                        logger.info("This is the retry logic")  
+                        sqs.send_message(
+                            QueueUrl=SQS_URL,
+                            MessageBody=message['Body'],
+                            DelaySeconds=30  # Wait 30s before retrying
+                        )
+                        # Delete original message so it doesn't timeout and retry immediately
+                        try:
+                            sqs.delete_message(QueueUrl=SQS_URL, ReceiptHandle=receipt_handle)
+                        except Exception:
+                            pass # Ignore if already deleted
+
+                        logger.info("🔁 Message re-queued for retry")
+                    except Exception as sqs_e:
+                        logger.error(f"❌ Failed to re-queue message: {sqs_e}")
 
         except ClientError as e:
             logger.error(f"❌ SQS polling error: {e}")
@@ -560,13 +587,15 @@ def main():
             logger.error("❌ FFmpeg not found. Please install FFmpeg.")
             return
         
-        # Verify FFprobe is available
-        try:
-            subprocess.run(["ffprobe", "-version"], capture_output=True, check=True)
-            logger.info("✅ FFprobe is available")
-        except (subprocess.CalledProcessError, FileNotFoundError):
+        if not shutil.which("ffprobe"):
             logger.error("❌ FFprobe not found. Please install FFmpeg.")
             return
+
+        # Cleanup stale work artifacts on startup
+        if WORK_DIR.exists():
+            logger.info("🧹 Cleaning up stale work directory...")
+            shutil.rmtree(WORK_DIR, ignore_errors=True)
+            WORK_DIR.mkdir(exist_ok=True)
         
         # Start polling
         poll_sqs()
