@@ -18,7 +18,7 @@ s3 = boto3.client(
 BUCKET = os.getenv("TEMP_BUCKET_NAME", "musicstreaming-uploads")
 
 # File to upload
-FILE_NAME = "Ek Mulakat Zaruri Hai Sanam (( Sad😰 💔 Song ))HD Sirf Tum 1999 _ Jaspinder Narula, Sabri Brothers.mp3"
+FILE_NAME = "Aayega Maza Ab Barsaat Ka_ Andaaz _ Akshay Kumar _ Priyanka Chopra _ Lara Dutta _ Romantic Hindi_ HD.mp3"
 FILE_PATH = Path(__file__).parent / FILE_NAME
 
 def upload():
