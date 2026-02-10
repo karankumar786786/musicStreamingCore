@@ -159,13 +159,16 @@ def process_audio(s3_key):
     """Main processing function"""
     
     timestamp = int(time.time())
-    song_name = Path(s3_key).stem
+    original_name = Path(s3_key).stem
     
-    # Work directory - everything in one place
+    # ✅ Create a clean folder name (replace spaces with hyphens or underscores)
+    song_name = original_name.replace(' ', '-').replace('_', '-')
+    
     work_dir = WORK_DIR / f"{song_name}_{timestamp}"
     audio_file = work_dir / "audio.mp3"
     
     logger.info(f"📦 Processing: {s3_key}")
+    logger.info(f"📁 Output folder: {song_name}")
     
     try:
         # Create work directory

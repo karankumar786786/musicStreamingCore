@@ -6,7 +6,7 @@ const durationDisplay = document.getElementById("duration");
 const lyricsDisplay = document.getElementById("lyricsDisplay");
 const qualitySelector = document.getElementById("qualitySelector");
 
-const audioSrc = "https://musicstreamingprod.s3.ap-south-1.amazonaws.com/eminem-without-me-official-music-video/master.m3u8";
+const audioSrc = "https://musicstreamingprod.s3.ap-south-1.amazonaws.com/aayega-maza-ab-barsaat-ka_-andaaz-_-akshay-kumar-_-priyanka-chopra-_-lara-dutta-_-romantic-hindi_-hd/master.m3u8";
 // const audioSrc = "https://musicstreamingprod.s3.ap-south-1.amazonaws.com/the-weeknd-sao-paulo-feat-anitta-official-audio/master.m3u8"
 // const audioSrc = "https://musicstreamingprod.s3.ap-south-1.amazonaws.com/aayega-maza-ab-barsaat-ka_-andaaz-_-akshay-kumar-_-priyanka-chopra-_-lara-dutta-_-romantic-hindi_-hd/master.m3u8";
 // const audioSrc = "https://musicstreamingprod.s3.ap-south-1.amazonaws.com/songs-user_39qysgawaslkggjlmyorhfrego5-1770659582624-haseen_-_talwiinder_nds_rippy_official_visualizer_256kbps/master.m3u8";
