@@ -1,6 +1,6 @@
 """
 Simplified Audio Processor - FIXED
-- Single quality (128k)
+- Multiple qualities (8k, 16k, 32k, 64k, 128k)
 - No normalization
 - No original file preservation
 - Proper SQS message handling (no duplicates!)
@@ -44,6 +44,13 @@ WORK_DIR = Path("work")
 WORK_DIR.mkdir(exist_ok=True)
 
 AUDIO_EXTS = {".mp3", ".wav", ".aac", ".m4a", ".flac", ".ogg", ".opus"}
+
+# Audio quality profiles
+QUALITY_PROFILES = [
+    {"bitrate": "32k", "bandwidth": 32000},
+    {"bitrate": "64k", "bandwidth": 64000},
+    {"bitrate": "128k", "bandwidth": 128000},
+]
 
 # ============= WHISPER MODEL =============
 logger.info("🤖 Loading Whisper model...")
@@ -95,32 +102,49 @@ def transcribe_audio(audio_path, output_vtt):
     return info.language
 
 
-def transcode_to_hls(input_audio, output_dir):
-    """Transcode to HLS (single 128k quality)"""
-    logger.info("🎬 Transcoding to HLS...")
+def transcode_to_hls_multi_quality(input_audio, output_dir):
+    """Transcode to HLS with multiple quality variants"""
+    logger.info("🎬 Transcoding to HLS (multi-quality)...")
     
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    cmd = [
-        "ffmpeg", "-y", "-i", str(input_audio),
-        "-c:a", "aac", "-b:a", "128k",
-        "-f", "hls", "-hls_time", "6",
-        "-hls_playlist_type", "vod",
-        "-hls_segment_filename", str(output_dir / "segment_%03d.ts"),
-        str(output_dir / "playlist.m3u8")
-    ]
+    # Transcode each quality variant
+    for profile in QUALITY_PROFILES:
+        bitrate = profile["bitrate"]
+        quality_dir = output_dir / bitrate
+        quality_dir.mkdir(exist_ok=True)
+        
+        logger.info(f"   🔄 Encoding {bitrate}...")
+        
+        cmd = [
+            "ffmpeg", "-y", "-i", str(input_audio),
+            "-c:a", "aac", "-b:a", bitrate,
+            "-f", "hls", "-hls_time", "6",
+            "-hls_playlist_type", "vod",
+            "-hls_segment_filename", str(quality_dir / "segment_%03d.ts"),
+            str(quality_dir / "playlist.m3u8")
+        ]
+        
+        subprocess.run(cmd, check=True, capture_output=True)
     
-    subprocess.run(cmd, check=True, capture_output=True)
-    logger.info("✅ Transcoding complete")
+    logger.info("✅ All qualities transcoded")
 
 
 def create_master_playlist(output_dir, language="en"):
-    """Create master.m3u8 WITHOUT subtitle reference"""
-    content = """#EXTM3U
-#EXT-X-VERSION:3
-#EXT-X-STREAM-INF:BANDWIDTH=128000,CODECS="mp4a.40.2"
-playlist.m3u8
-"""
+    """Create master.m3u8 with multiple quality variants"""
+    
+    # Build playlist content
+    lines = ["#EXTM3U", "#EXT-X-VERSION:3", ""]
+    
+    for profile in QUALITY_PROFILES:
+        bitrate = profile["bitrate"]
+        bandwidth = profile["bandwidth"]
+        
+        lines.append(f"#EXT-X-STREAM-INF:BANDWIDTH={bandwidth},CODECS=\"mp4a.40.2\"")
+        lines.append(f"{bitrate}/playlist.m3u8")
+    
+    content = "\n".join(lines) + "\n"
+    
     (output_dir / "master.m3u8").write_text(content, encoding="utf-8")
     logger.info("✅ Master playlist created")
 
@@ -139,6 +163,11 @@ def upload_to_s3(local_dir, bucket, prefix):
     for root, _, files in os.walk(local_dir):
         for file in files:
             file_path = Path(root) / file
+            
+            # Skip the original audio file
+            if file == 'audio.mp3':
+                continue
+            
             rel_path = file_path.relative_to(local_dir)
             s3_key = f"{prefix}/{rel_path.as_posix()}"
             
@@ -161,7 +190,7 @@ def process_audio(s3_key):
     timestamp = int(time.time())
     original_name = Path(s3_key).stem
     
-    # ✅ Create a clean folder name (replace spaces with hyphens or underscores)
+    # ✅ Create a clean folder name
     song_name = original_name.replace(' ', '-').replace('_', '-')
     
     work_dir = WORK_DIR / f"{song_name}_{timestamp}"
@@ -174,7 +203,7 @@ def process_audio(s3_key):
         # Create work directory
         work_dir.mkdir(parents=True, exist_ok=True)
         
-        # Download to work directory (NOT a shared folder!)
+        # Download to work directory
         logger.info("⬇️ Downloading...")
         s3.download_file(TEMP_BUCKET, s3_key, str(audio_file))
         logger.info("✅ Downloaded")
@@ -183,8 +212,8 @@ def process_audio(s3_key):
         vtt_path = work_dir / "captions.vtt"
         detected_lang = transcribe_audio(audio_file, vtt_path)
         
-        # Transcode to HLS
-        transcode_to_hls(audio_file, work_dir)
+        # Transcode to HLS (multiple qualities)
+        transcode_to_hls_multi_quality(audio_file, work_dir)
         
         # Create master playlist
         create_master_playlist(work_dir, language=detected_lang)
@@ -222,14 +251,15 @@ def poll_sqs():
     logger.info(f"   Queue: {SQS_URL}")
     logger.info(f"   Temp Bucket: {TEMP_BUCKET}")
     logger.info(f"   Prod Bucket: {PROD_BUCKET}")
+    logger.info(f"   Quality Profiles: {', '.join([p['bitrate'] for p in QUALITY_PROFILES])}")
     
     while True:
         try:
             response = sqs.receive_message(
                 QueueUrl=SQS_URL,
-                MaxNumberOfMessages=1,  # Process one at a time
+                MaxNumberOfMessages=1,
                 WaitTimeSeconds=20,
-                VisibilityTimeout=1800  # 30 min timeout (enough for transcription)
+                VisibilityTimeout=1800
             )
             
             messages = response.get('Messages', [])
@@ -242,13 +272,11 @@ def poll_sqs():
             try:
                 body = json.loads(message['Body'])
                 
-                # Skip test events
                 if body.get('Event') == 's3:TestEvent':
                     logger.info("🧪 Skipping test event")
                     sqs.delete_message(QueueUrl=SQS_URL, ReceiptHandle=receipt_handle)
                     continue
                 
-                # Get S3 key
                 records = body.get('Records', [])
                 if not records:
                     logger.warning("⚠️ No records")
@@ -256,8 +284,6 @@ def poll_sqs():
                     continue
                 
                 s3_key = records[0].get('s3', {}).get('object', {}).get('key')
-                
-                # ✅ DECODE URL ENCODING - SQS encodes spaces as +
                 s3_key = urllib.parse.unquote_plus(s3_key)
                 
                 if not s3_key or not is_audio_file(s3_key):
@@ -267,21 +293,16 @@ def poll_sqs():
                 
                 logger.info(f"📥 Job: {s3_key}")
                 
-                # Process the audio
                 success = process_audio(s3_key)
                 
-                # CRITICAL: Only delete message if successful
                 if success:
                     sqs.delete_message(QueueUrl=SQS_URL, ReceiptHandle=receipt_handle)
                     logger.info("✅ Message deleted (success)")
                 else:
-                    # On failure, message will become visible again after VisibilityTimeout
-                    # SQS will automatically retry based on queue settings
                     logger.warning("⚠️ Message NOT deleted (will retry)")
                 
             except Exception as e:
                 logger.error(f"❌ Processing error: {e}")
-                # Don't delete message - let it retry
                 logger.warning("⚠️ Message NOT deleted (will retry)")
         
         except Exception as e:
@@ -323,4 +344,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main() 
+    main()
