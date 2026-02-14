@@ -1,12 +1,10 @@
 """
 Simplified Audio Processor - FIXED with Supabase Integration
-- Multiple qualities (8k, 16k, 32k, 64k, 128k)
-- No normalization
-- No original file preservation
-- Proper SQS message handling (no duplicates!)
-- Simple folder structure
-- URL decoding for S3 keys
-- Updates Supabase with processed HLS base URL
+- Multiple qualities (32k, 64k, 128k)
+- Proper HLS segmentation
+- Supabase integration
+- Upstash Vector for captions
+- Simple folder structure using UUID only
 """
 
 import os
@@ -23,6 +21,7 @@ import boto3
 from faster_whisper import WhisperModel
 from dotenv import load_dotenv
 from supabase import create_client, Client
+from upstash_vector import Index, Vector
 
 load_dotenv()
 
@@ -39,8 +38,10 @@ AWS_REGION = os.getenv("AWS_REGION", "ap-south-1")
 TEMP_BUCKET = os.getenv("TEMP_BUCKET_NAME")
 PROD_BUCKET = os.getenv("PRODUCTION_BUCKET_NAME")
 SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")  # Use service role key for server-side
-CLOUDFRONT_DOMAIN = os.getenv("CLOUDFRONT_DOMAIN", "")  # Optional: your CloudFront domain
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+CLOUDFRONT_DOMAIN = os.getenv("CLOUDFRONT_DOMAIN", "")
+UPSTASH_VECTOR_REST_URL = os.getenv("UPSTASH_VECTOR_REST_URL")
+UPSTASH_VECTOR_REST_TOKEN = os.getenv("UPSTASH_VECTOR_REST_TOKEN")
 
 if not all([SQS_URL, TEMP_BUCKET, PROD_BUCKET, SUPABASE_URL, SUPABASE_KEY]):
     raise EnvironmentError("Missing required environment variables")
@@ -72,6 +73,10 @@ logger.info("✅ AWS clients initialized")
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 logger.info("✅ Supabase client initialized")
 
+# ============= UPSTASH VECTOR CLIENT =============
+index = Index(url=UPSTASH_VECTOR_REST_URL, token=UPSTASH_VECTOR_REST_TOKEN)
+logger.info("✅ Upstash Vector index initialized")
+
 
 # ============= HELPER FUNCTIONS =============
 
@@ -81,18 +86,22 @@ def extract_song_id_from_key(s3_key):
     Returns: (processingId, folder_name)
     """
     try:
-        # Expected pattern: uuid-song-title.mp3 (no path prefix)
-        # Extract just the filename if there's a path
         filename = os.path.basename(s3_key)
         
-        # Pattern: {uuid}-{slug}.ext
-        match = re.search(r'^([a-f0-9\-]+)-([^\.]+)', filename)
+        # Pattern: {uuid}-{anything}.ext - extract just the UUID
+        match = re.search(r'^([a-f0-9\-]{36})', filename)
         if match:
             processing_id = match.group(1)
-            slug = match.group(2)
-            folder_name = f"{processing_id}-{slug}"
+            # Use ONLY the UUID as folder name (clean and short)
+            folder_name = processing_id
             return processing_id, folder_name
-        return None, None
+        
+        # Fallback: if no UUID found, use the whole stem
+        logger.warning(f"No UUID found in {s3_key}, using filename stem")
+        stem = Path(filename).stem
+        clean_name = stem.replace(' ', '-').replace('_', '-')
+        return clean_name, clean_name
+        
     except Exception as e:
         logger.error(f"Failed to extract processingId from key: {s3_key}, error: {e}")
         return None, None
@@ -105,7 +114,7 @@ def update_song_url_in_supabase(processing_id, base_url):
         
         response = supabase.table('songs').update({
             'songUrl': base_url,
-            'processing': False,  # Mark as complete
+            'processing': False,
         }).eq('processingId', processing_id).execute()
         
         if response.data:
@@ -158,7 +167,7 @@ def transcribe_audio(audio_path, output_vtt):
 
 
 def transcode_to_hls_multi_quality(input_audio, output_dir):
-    """Transcode to HLS with multiple quality variants"""
+    """Transcode to HLS with multiple quality variants - WORKING VERSION"""
     logger.info("🎬 Transcoding to HLS (multi-quality)...")
     
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -180,7 +189,8 @@ def transcode_to_hls_multi_quality(input_audio, output_dir):
             str(quality_dir / "playlist.m3u8")
         ]
         
-        subprocess.run(cmd, check=True, capture_output=True)
+        logger.info(f"Command: {' '.join(cmd)}")
+        subprocess.run(cmd, check=True)
     
     logger.info("✅ All qualities transcoded")
 
@@ -240,10 +250,8 @@ def upload_to_s3(local_dir, bucket, prefix):
 def get_base_url(folder_name):
     """Generate base URL for HLS streaming"""
     if CLOUDFRONT_DOMAIN:
-        # Use CloudFront if configured
         return f"https://{CLOUDFRONT_DOMAIN}/{folder_name}"
     else:
-        # Use S3 direct URL
         return f"https://{PROD_BUCKET}.s3.{AWS_REGION}.amazonaws.com/{folder_name}"
 
 
@@ -280,7 +288,7 @@ def process_audio(s3_key):
         vtt_path = work_dir / "captions.vtt"
         detected_lang = transcribe_audio(audio_file, vtt_path)
         
-        # Transcode to HLS (multiple qualities)
+        # Transcode to HLS (multiple qualities) - using WORKING version
         transcode_to_hls_multi_quality(audio_file, work_dir)
         
         # Create master playlist
@@ -296,9 +304,26 @@ def process_audio(s3_key):
         # Update Supabase with the base URL
         supabase_updated = update_song_url_in_supabase(processing_id, base_url)
         
+        # Upsert captions to Upstash Vector
+        try:
+            if vtt_path.exists():
+                caption_data = vtt_path.read_text(encoding="utf-8")
+                logger.info(f"🧠 Upserting captions to Upstash for: {processing_id}")
+                index.upsert(
+                    vectors=[
+                        Vector(
+                            id=processing_id,
+                            data=caption_data,
+                            metadata={"song_id": processing_id, "type": "caption"}
+                        )
+                    ]
+                )
+                logger.info(f"✅ Upstash Vector updated for processingId: {processing_id}")
+        except Exception as ve:
+            logger.error(f"❌ Upstash Vector upsert failed: {ve}")
+
         if not supabase_updated:
             logger.warning("⚠️ Song processed but Supabase update failed")
-            # Don't return False - the files are processed, just DB update failed
         
         # Delete from temp bucket after success
         logger.info("🗑️ Deleting from temp bucket...")
@@ -315,11 +340,11 @@ def process_audio(s3_key):
         import traceback
         logger.error(traceback.format_exc())
         
-        # Mark song as failed in Supabase (keep processing=True to indicate issue)
+        # Mark song as failed in Supabase
         try:
             supabase.table('songs').update({
-                'processing': True,  # Keep as True to show it failed during processing
-                'songUrl': f"error: {str(e)[:100]}"  # Store error in songUrl temporarily
+                'processing': True,
+                'songUrl': f"error: {str(e)[:100]}"
             }).eq('processingId', processing_id).execute()
         except:
             pass
