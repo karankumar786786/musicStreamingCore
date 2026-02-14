@@ -181,7 +181,7 @@ def transcode_to_hls_multi_quality(input_audio, output_dir):
         logger.info(f"   🔄 Encoding {bitrate}...")
         
         cmd = [
-            "ffmpeg", "-y", "-i", str(input_audio),
+            "ffmpeg", "-y", "-loglevel", "error", "-i", str(input_audio),
             "-c:a", "aac", "-b:a", bitrate,
             "-f", "hls", "-hls_time", "6",
             "-hls_playlist_type", "vod",
@@ -189,7 +189,6 @@ def transcode_to_hls_multi_quality(input_audio, output_dir):
             str(quality_dir / "playlist.m3u8")
         ]
         
-        logger.info(f"Command: {' '.join(cmd)}")
         subprocess.run(cmd, check=True)
     
     logger.info("✅ All qualities transcoded")
