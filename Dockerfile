@@ -25,6 +25,9 @@ FROM python:3.12-slim-bookworm
 
 WORKDIR /app
 
+# Install system dependencies (ffmpeg)
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -rf /var/lib/apt/lists/*
+
 # Copy the virtual environment from the builder stage
 COPY --from=builder /app/.venv /app/.venv
 
